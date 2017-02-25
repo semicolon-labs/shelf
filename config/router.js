@@ -14,8 +14,9 @@ router.get('/', function(req, res){
 	res.sendFile(path.join(__dirname, '/../public/html/index.html'));
 });
 
-router.get('/public/js/:fileName', function(req, res){
-	res.sendFile(path.join(__dirname, '/../public/js', req.params.fileName));
+//www.example.com/public/?filePath=js/jquery.js
+router.get('/public', function(req, res){
+	res.sendFile(path.join(__dirname, '/../public/', req.query.filePath));
 });
 
 /**router.get('/test', function(req, res){
@@ -29,9 +30,10 @@ router.get('/get-time', function(req, res){
 	res.send(new Date(new Date().getTime()).toUTCString());
 });
 
+*/
 router.get('/test-product', function(req, res){
 	res.sendFile(path.join(__dirname, '/../templates', 'product.html'));
-});*/
+});
 
 /** Session stuff */
 router.post('/login', function(req ,res){
