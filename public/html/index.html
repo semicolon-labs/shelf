@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>Login | Shelf</title>
+    <script src = "http://localhost:8082/public/js/jquery.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="650846058520-b26gdetrc197epdebmpee04oftiuecve.apps.googleusercontent.com">
+    <meta name="google-signin-hosted_domain" content="vitstudent.ac.in">
+  </head>
+  <body>
+    <script>
+      function onSignIn(googleUser){
+            id_token = googleUser.getAuthResponse().id_token;
+            //console.log(id_token);
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId());
+            console.log('Name: ' + profile.getName());
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:8082/login');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function() {
+              console.log('Signed in');
+            };
+            xhr.send(JSON.stringify({idtoken: id_token}));
+        }
+        $(document).ready(function(){
+          $('#signOutButton').click(function(){
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function() {
+              console.log('User signed out.');
+            });
+          });
+        });
+    </script>
+    <div class="g-signin2" data-onsuccess="onSignIn" data-onload="true"></div>
+    <a href="#" id='signOutButton'>Sign out</a>
+  </body>
+</html>
