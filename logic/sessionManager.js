@@ -8,7 +8,7 @@
   * 3. checkLogin()
   * 4. verifyToken()
   * 5. checkLoginInternal()
-  * 6 getUserDetails()
+  * 6. getUserDetails()
 */
 var config = require('./../config/config.js');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
@@ -35,7 +35,8 @@ function getUserDetails(req, callback){
           if(xhr.status===200){
             var raw = JSON.parse(xhr.responseText);
               details = {username: raw.given_name,
-                          id: raw.family_name};
+                          id: raw.family_name,
+                          email: raw.email};
               callback(details);
           }else {
             console.log("Status not 200")
