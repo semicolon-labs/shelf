@@ -1,0 +1,276 @@
+#title{
+    font-size:100;
+    background-attachment: fixed;
+  	color: white;
+  	font: helvetica, arial, sans-serif;
+    text-align: center;
+}
+
+#s{
+  margin-left: 27%;
+  margin-top: 10%;
+
+}
+.constellation {
+	float: left;
+	height: 196px;
+	position: relative;
+	width: 140px;
+}
+
+.constellation .small {
+	border-radius: 2px;
+	height: 4px;
+	margin: 3px;
+	width: 4px;
+}
+.constellation .medium {
+	border-radius: 3px;
+	height: 6px;
+	margin: 2px;
+	width: 6px;
+}
+.constellation .large {
+	border-radius: 4px;
+	height: 8px;
+	margin: 1px;
+	width: 8px;
+}
+.constellation .xlarge {
+	border-radius: 6px;
+	height: 10px;
+	width: 10px;
+}
+
+.star {
+	background-color: white;
+	border-radius: 4px;
+	height: 8px;
+	left: 0;
+	margin: 1px;
+	position: absolute;
+	top: 0;
+	width: 8px;
+	z-index: 2;
+}
+
+/*S*/
+.s .star1 {
+	left: 103px;
+	top: 55px;
+}
+.s .star2 {
+	left: 89px;
+	top: 33px;
+}
+.s .star3 {
+	left: 63px;
+	top: 24px;
+}
+.s .star4 {
+	left: 40px;
+	top: 29px;
+}
+.s .star5 {
+	left: 21px;
+	top: 43px;
+}
+.s .star6 {
+	left: 20px;
+	top: 70px;
+}
+.s .star7 {
+	left: 44px;
+	top: 88px;
+}
+.s .star8 {
+	left: 70px;
+	top: 94px;
+}
+.s .star9 {
+	left: 98px;
+	top: 104px;
+}
+.s .star10 {
+	left: 108px;
+	top: 125px;
+}
+.s .star11 {
+	left: 98px;
+	top: 149px;
+}
+.s .star12 {
+	left: 73px;
+	top: 160px;
+}
+.s .star13 {
+	left: 45px;
+	top: 160px;
+}
+.s .star14 {
+	left: 23px;
+	top: 149px;
+}
+.s .star15 {
+	left: 13px;
+	top: 128px;
+}
+
+
+/* E */
+
+.e .star1 {
+	top: 31px;
+	left: 25px;
+}
+.e .star2 {
+    top: 29px;
+    left: 52px;
+}
+.e .star3 {
+    top: 30px;
+    left: 80px;
+}
+.e .star4 {
+    top: 31px;
+    left: 108px;
+}
+.e .star5 {
+    top: 58px;
+    left: 24px;
+}
+.e .star6 {
+    top: 87px;
+    left: 22px;
+}
+.e .star7 {
+    top: 89px;
+    left: 50px;
+}
+.e .star8 {
+    top: 88px;
+    left: 80px;
+}
+.e .star9 {
+    top: 88px;
+    left: 104px;
+}
+.e .star10 {
+    top: 121px;
+    left: 22px;
+}
+.e .star11 {
+    top: 153px;
+    left: 22px;
+}
+.e .star12 {
+    top: 155px;
+    left: 51px;
+}
+.e .star13 {
+    top: 154px;
+    left: 80px;
+}
+.e .star14 {
+    top: 155px;
+    left: 106px;
+}
+
+/*H*/
+
+
+.h .star1 {
+	top: 31px;
+	left: 25px;
+}
+.h .star2 {
+    top: 29px;
+    left: 52px;
+}
+.h .star3 {
+    top: 30px;
+    left: 80px;
+}
+.h .star4 {
+    top: 31px;
+    left: 108px;
+}
+.h .star5 {
+    top: 58px;
+    left: 24px;
+}
+
+.h .star5x{
+  top: 58px;
+  left: 106px;
+}
+.h .star6 {
+    top: 87px;
+    left: 22px;
+}
+.h .star7 {
+    top: 89px;
+    left: 50px;
+}
+.h .star8 {
+    top: 88px;
+    left: 80px;
+}
+.h .star9 {
+    top: 88px;
+    left: 104px;
+}
+.h .star10 {
+    top: 121px;
+    left: 22px;
+}
+
+.h .star10x{
+  top: 121px;
+  left: 106px;
+}
+.h .star11 {
+    top: 153px;
+    left: 22px;
+}
+.h .star12 {
+    top: 155px;
+    left: 51px;
+}
+.h .star13 {
+    top: 154px;
+    left: 80px;
+}
+.h .star14 {
+    top: 155px;
+    left: 106px;
+}
+
+
+/*footer*/
+
+#footer{
+	font-weight:bold;
+	 color: white;
+	 background-color: #12121c;
+	 bottom: 0;
+	 height : 40px;
+	 margin-top : 40px;
+	 padding-top: 10px;
+	 width:100%;
+	 height: 100px;
+	 font-family: courier;
+	 text-indent: 10px;
+ }
+
+
+ div.icons{
+ 	display:inline;
+ 	position: absolute;
+ 	right:10px;
+ 	font-size: 25;
+ }
+.g-signin2{
+		margin-top: 5%;
+		margin-left: 45%;
+}
