@@ -10,6 +10,9 @@ var router = require('./router.js');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
+/**
+ * Authenticates the traffic prior to routing
+ */
 function authChecker(req, res, next) {
     if (req.session.auth || config.PERMITTED_URLS.indexOf(req.path)>-1)
         next();

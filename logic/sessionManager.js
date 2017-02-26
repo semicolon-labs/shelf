@@ -15,6 +15,10 @@
 var config = require('./../config/config.js');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
+/**
+ * POST request with token, domain in body
+ * Adds auth cookie if token and domain are verified
+ */
 exports.login = function(req, res){
   var token = req.body.idtoken;
   var domain = req.body.domain;
@@ -28,6 +32,10 @@ exports.login = function(req, res){
   });
 }
 
+/**
+ * Makes a call to googleapis and gets token info
+ * Returns username, id and email of the user
+ */
 function getUserDetails(req, callback){
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+req.session.auth.userToken);
@@ -49,6 +57,10 @@ function getUserDetails(req, callback){
   xhr.send();
 }
 
+/**
+ * Verifies the token from googleapis
+ * Checks client id and hosted domain for the request
+ */
 function verifyToken(token, domain, callback){
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+token);
@@ -71,6 +83,10 @@ function verifyToken(token, domain, callback){
     xhr.send();
 }
 
+/**
+ * GET request to logout
+ * Deletes auth cookie
+ */
 exports.logout = function(req, res){
   if(req.session&&req.session.auth&&req.session.auth.userToken){
       delete req.session.auth;
@@ -80,6 +96,10 @@ exports.logout = function(req, res){
     res.status(config.HTTP_CODES.FORBIDDEN).send("First log in to log out!")
 }
 
+/**
+ * GET request to check log in
+ * Returns user information if logged in
+ */
 exports.checkLogin = function(req, res){
   if(req.session&&req.session.auth&&req.session.auth.userToken){
     getUserDetails(req, function(data){

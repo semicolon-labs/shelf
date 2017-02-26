@@ -12,6 +12,10 @@ var config = require('./../config/config.js');
 //POOL config
 var pool = pgp(config.DBMS_CONFIG);
 
+/**
+ * GET request
+ * Returns list of cities available
+ */
 exports.getCities = function(req, res){
   pool.many('SELECT * FROM shelf.cities')
     .then(function(data){
@@ -23,6 +27,10 @@ exports.getCities = function(req, res){
     });
 }
 
+/**
+ * GET request with query ?id = xxx
+ * Returns client from a particular city
+ */
 exports.getClients = function(req, res){
   id = req.query.id;
   if(id===undefined)
