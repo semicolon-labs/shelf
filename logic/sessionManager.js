@@ -20,9 +20,9 @@ exports.login = function(req, res){
   verifyToken(token, function(status){
     if(status){
       req.session.auth = {userToken: token};
-      res.status(200).send("Login successfull");
+      res.status(config.HTTP_CODES.OK).send("Login successfull");
     }else{
-      res.status(403).send("Invalid token");
+      res.status(config.HTTP_CODES.FORBIDDEN).send("Invalid token");
     }
   });
 }
@@ -33,7 +33,7 @@ function getUserDetails(req, callback){
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = function() {
     if(xhr.readystate == XMLHttpRequest.DONE){
-        if(xhr.status===200){
+        if(xhr.status===config.HTTP_CODES.OK){
           var raw = JSON.parse(xhr.responseText);
             details = {username: raw.given_name,
                         id: raw.family_name,
@@ -55,7 +55,7 @@ function verifyToken(token, callback){
     xhr.onload = function() {
       //200 is verified and 400 is error
       if(xhr.readystate == XMLHttpRequest.DONE){
-          if(xhr.status===200){
+          if(xhr.status===config.HTTP_CODES.OK){
               var raw = JSON.parse(xhr.responseText);
               if(raw.email_verified==="true"&&raw.aud===config.GAPI_CLIENT_ID&&raw.hd==="vitstudent.ac.in"){
                 callback(true);
@@ -73,8 +73,20 @@ function verifyToken(token, callback){
 exports.logout = function(req, res){
   if(req.session&&req.session.auth&&req.session.auth.userToken){
       delete req.session.auth;
-      res.status(200).send("Logged out!");
+      res.status(config.HTTP_CODES.OK).send("Logged out!");
   }
   else
-    res.status(403).send("First log in to log out!")
+    res.status(config.HTTP_CODES.FORBIDDEN).send("First log in to log out!")
+}
+
+exports.checkLogin = function(req, res){
+  if(req.session&&req.session.auth&&req.session.auth.userToken){
+    getUserDetails(req, function(data){
+      if(data==="Error")
+        res.status(config.HTTP_CODES.SERVER_ERROR).send("Error");
+      else
+        res.status(config.HTTP_CODES.OK).send(data);
+    });
+  }else
+    res.status(config.HTTP_CODES.FORBIDDEN).send("False");
 }

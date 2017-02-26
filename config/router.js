@@ -40,6 +40,11 @@ router.get('/get-cities', function(req, res){
 	dataManager.getCities(req, res);
 });
 
+//usage example /get-clients?id=xxx
+router.get('/get-clients', function(req, res){
+	dataManager.getClients(req, res);
+});
+
 //INDEX redirection for / or any invalid url
 router.get('/*', function(req, res){
 	res.sendFile(path.join(__dirname, '/../public/html/index.html'));
