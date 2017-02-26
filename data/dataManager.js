@@ -46,3 +46,21 @@ exports.getClients = function(req, res){
         });
   }
 }
+
+/**
+ * If user details does not exist in the database, create new user.
+ */
+exports.checkUserExists = function(userData, callback){
+  pool.none(`INSERT INTO shelf.users(name, reg, email) 
+                  SELECT $1, $2, $3
+                  WHERE NOT EXISTS(
+                    SELECT uid, name, reg, email FROM shelf.users WHERE reg = $2
+                  )`, [userData.username, userData.id, userData.email])
+  .then(function(){
+    callback("done");
+  })
+  .catch(function(error){
+    console.log(error);
+    callback("error");
+  });
+}

@@ -14,18 +14,31 @@
 //Include modules
 var config = require('./../config/config.js');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var dataManager = require("./../data/dataManager");
 
 /**
  * POST request with token, domain in body
  * Adds auth cookie if token and domain are verified
+ * If user does not exists make a new user in the database
  */
 exports.login = function(req, res){
   var token = req.body.idtoken;
   var domain = req.body.domain;
+  //token verification
   verifyToken(token, domain, function(status){
     if(status){
       req.session.auth = {userToken: token};
-      res.status(config.HTTP_CODES.OK).send("Login successfull");
+      //fetch user details
+      getUserDetails(req, function(userData){
+        //add user if it does not exists
+        dataManager.checkUserExists(userData, function(info){
+          if(info=="error")
+            res.status(config.HTTP_CODES.SERVER_ERROR).send("Error");
+          else{
+            res.status(config.HTTP_CODES.OK).send("Login successfull");
+          }
+        });
+      });
     }else{
       res.status(config.HTTP_CODES.FORBIDDEN).send("Invalid token");
     }
