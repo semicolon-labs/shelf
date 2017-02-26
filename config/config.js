@@ -16,5 +16,6 @@ config.DBMS_CONFIG = {
     port: '5432',
     password: process.env.DB_PASSWORD
 };
+config.PERMITTED_URLS = ["/", "/check-login", "/logout", "/login"];
 
 module.exports = config;
