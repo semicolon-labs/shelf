@@ -17,7 +17,8 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 exports.login = function(req, res){
   var token = req.body.idtoken;
-  verifyToken(token, function(status){
+  var domain = req.body.domain;
+  verifyToken(token, domain, function(status){
     if(status){
       req.session.auth = {userToken: token};
       res.status(config.HTTP_CODES.OK).send("Login successfull");
@@ -48,7 +49,7 @@ function getUserDetails(req, callback){
   xhr.send();
 }
 
-function verifyToken(token, callback){
+function verifyToken(token, domain, callback){
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+token);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -57,7 +58,7 @@ function verifyToken(token, callback){
       if(xhr.readystate == XMLHttpRequest.DONE){
           if(xhr.status===config.HTTP_CODES.OK){
               var raw = JSON.parse(xhr.responseText);
-              if(raw.email_verified==="true"&&raw.aud===config.GAPI_CLIENT_ID&&raw.hd==="vitstudent.ac.in"){
+              if(raw.email_verified==="true"&&raw.aud===config.GAPI_CLIENT_ID&&raw.hd===domain){
                 callback(true);
               }else {
                 callback(false);
