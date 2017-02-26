@@ -2,6 +2,7 @@
 * This file accounts for all database transactions
 * Implements
 * 1. getCities()
+* 2. getClients()
 */
 
 //Include modules
