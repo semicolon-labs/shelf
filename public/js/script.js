@@ -2,8 +2,11 @@ function onSignIn(googleUser){
             id_token = googleUser.getAuthResponse().id_token;
             //console.log(id_token);
             var profile = googleUser.getBasicProfile();
+            var email = profile.getEmail();
+            var domain = email.substring(email.indexOf("@")+1);
             console.log('ID: ' + profile.getId());
             console.log('Name: ' + profile.getName());
+            console.log('Domain: ' + domain);
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'http://localhost:8082/login');
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -16,7 +19,7 @@ function onSignIn(googleUser){
                   }
               }
             };
-            xhr.send(JSON.stringify({idtoken: id_token}));
+            xhr.send(JSON.stringify({idtoken: id_token, domain: domain}));
         }
 
 
