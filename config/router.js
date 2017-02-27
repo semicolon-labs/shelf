@@ -3,39 +3,26 @@
  * It manages all routing and directing!
 */
 
+//Include modules
 var express = require('express');
 var router = express.Router();
 var path = require('path');
 var User = require('../logic/User');
 var Product = require('../logic/Product');
 var sessionManager = require('../logic/sessionManager');
-
-router.get('/', function(req, res){
-	res.sendFile(path.join(__dirname, '/../public/html/index.html'));
-});
+var dataManager = require('../data/dataManager');
 
 //www.example.com/public/?filePath=js/jquery.js
 router.get('/public', function(req, res){
 	res.sendFile(path.join(__dirname, '/../public/', req.query.filePath));
 });
 
-/**router.get('/test', function(req, res){
-	var Shubham = new User("16BLC1041", "Shubham", "shubhamsharma1172@gmail.com", "VIT Chennai", "8272980776");
-	var Book1 = new Product("00001", Shubham, "Computer Science with Java", "IMAGE", "It is a XIIth standard book",
-	 												"Computer Science", 500, Product.CONDITION_GOOD, Product.NEGOTIABLE_YES);
-	res.send(Book1.getDetails());
-});
-
-router.get('/get-time', function(req, res){
-	res.send(new Date(new Date().getTime()).toUTCString());
-});
-
-*/
+/** TEST ROUTE */
 router.get('/test-product', function(req, res){
 	res.sendFile(path.join(__dirname, '/../templates', 'product.html'));
 });
 
-/** Session stuff */
+/** SESSION routes */
 router.post('/login', function(req ,res){
 	sessionManager.login(req, res);
 });
@@ -46,6 +33,21 @@ router.get('/logout', function(req ,res){
 
 router.get('/check-login', function(req, res){
 	sessionManager.checkLogin(req, res);
+});
+
+/** DATA routes */
+router.get('/get-cities', function(req, res){
+	dataManager.getCities(req, res);
+});
+
+//usage example /get-clients?id=xxx
+router.get('/get-clients', function(req, res){
+	dataManager.getClients(req, res);
+});
+
+//INDEX redirection for / or any invalid url
+router.get('/*', function(req, res){
+	res.sendFile(path.join(__dirname, '/../public/html/index.html'));
 });
 
 module.exports = router;

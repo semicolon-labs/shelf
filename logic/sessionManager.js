@@ -1,5 +1,5 @@
 /**
-  * This is the session management class
+  * This is the session management file
   * accounts for the user session management.
   * GAPI authentication; Cookie management;
   * Implements
@@ -10,76 +10,80 @@
   * 5. checkLoginInternal()
   * 6. getUserDetails()
 */
+
+//Include modules
 var config = require('./../config/config.js');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var dataManager = require("./../data/dataManager");
 
+/**
+ * POST request with token, domain in body
+ * Adds auth cookie if token and domain are verified
+ * If user does not exists make a new user in the database
+ */
 exports.login = function(req, res){
   var token = req.body.idtoken;
-  verifyToken(token, function(status){
+  var domain = req.body.domain;
+  //token verification
+  verifyToken(token, domain, function(status){
     if(status){
       req.session.auth = {userToken: token};
-      res.status(200).send("Login successfull");
+      //fetch user details
+      getUserDetails(req, function(userData){
+        //add user if it does not exists
+        dataManager.checkUserExists(userData, function(info){
+          if(info=="error")
+            res.status(config.HTTP_CODES.SERVER_ERROR).send("Error");
+          else{
+            res.status(config.HTTP_CODES.OK).send("Login successfull");
+          }
+        });
+      });
     }else{
-      res.status(403).send("Invalid token");
+      res.status(config.HTTP_CODES.FORBIDDEN).send("Invalid token");
     }
   });
 }
 
+/**
+ * Makes a call to googleapis and gets token info
+ * Returns username, id and email of the user
+ */
 function getUserDetails(req, callback){
-  if(checkLoginInternal(req)){
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+req.session.auth.userToken);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() {
-      if(xhr.readystate == XMLHttpRequest.DONE){
-          if(xhr.status===200){
-            var raw = JSON.parse(xhr.responseText);
-              details = {username: raw.given_name,
-                          id: raw.family_name,
-                          email: raw.email};
-              callback(details);
-          }else {
-            console.log("Status not 200")
-            callback("Error");
-          }
-      }
-    };
-    xhr.send();
-  }else {
-    console.log("CHECKINTERNALFALSE");
-    callback("Error");
-  }
-}
-
-exports.checkLogin = function(req, res){
-    if(checkLoginInternal(req)){
-        getUserDetails(req, function(details){
-          if(details==="Error")
-            res.status(500).send("Error");
-          else
-            res.status(200).send(details);
-        });
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+req.session.auth.userToken);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.onload = function() {
+    if(xhr.readystate == XMLHttpRequest.DONE){
+        if(xhr.status===config.HTTP_CODES.OK){
+          var raw = JSON.parse(xhr.responseText);
+            details = {username: raw.given_name,
+                        id: raw.family_name,
+                        email: raw.email};
+            callback(details);
+        }else {
+          console.log("Status not 200")
+          callback("Error");
+        }
     }
-    else
-      res.status(403).send("false");
+  };
+  xhr.send();
 }
 
-function checkLoginInternal(req){
-  if(req.session&&req.session.auth&&req.session.auth.userToken)
-      return true;
-  return false;
-}
-
-function verifyToken(token, callback){
+/**
+ * Verifies the token from googleapis
+ * Checks client id and hosted domain for the request
+ */
+function verifyToken(token, domain, callback){
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+token);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function() {
       //200 is verified and 400 is error
       if(xhr.readystate == XMLHttpRequest.DONE){
-          if(xhr.status===200){
+          if(xhr.status===config.HTTP_CODES.OK){
               var raw = JSON.parse(xhr.responseText);
-              if(raw.email_verified==="true"&&raw.aud===config.GAPI_CLIENT_ID&&raw.hd==="vitstudent.ac.in"){
+              if(raw.email_verified==="true"&&raw.aud===config.GAPI_CLIENT_ID&&raw.hd===domain){
                 callback(true);
               }else {
                 callback(false);
@@ -92,11 +96,31 @@ function verifyToken(token, callback){
     xhr.send();
 }
 
+/**
+ * GET request to logout
+ * Deletes auth cookie
+ */
 exports.logout = function(req, res){
-  if(checkLoginInternal(req)){
-    delete req.session.auth;
-    res.status(200).send("Logged out!");
+  if(req.session&&req.session.auth&&req.session.auth.userToken){
+      delete req.session.auth;
+      res.status(config.HTTP_CODES.OK).send("Logged out!");
   }
   else
-    res.status(403).send("First log in to log out!")
+    res.status(config.HTTP_CODES.FORBIDDEN).send("First log in to log out!")
+}
+
+/**
+ * GET request to check log in
+ * Returns user information if logged in
+ */
+exports.checkLogin = function(req, res){
+  if(req.session&&req.session.auth&&req.session.auth.userToken){
+    getUserDetails(req, function(data){
+      if(data==="Error")
+        res.status(config.HTTP_CODES.SERVER_ERROR).send("Error");
+      else
+        res.status(config.HTTP_CODES.OK).send(data);
+    });
+  }else
+    res.status(config.HTTP_CODES.FORBIDDEN).send("False");
 }
