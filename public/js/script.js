@@ -19,6 +19,16 @@ function onSignIn(googleUser){
             xhr.send(JSON.stringify({idtoken: id_token}));
         }
 
+ function renderButton() {
+                gapi.signin2.render('my-signin2', {
+                  'scope': 'profile email',
+                  'width': 240,
+                  'height': 50,
+                  'longtitle': true,
+                  'theme': 'dark',
+                  'onsuccess': onSignIn
+                });
+              }
 
  $(document).ready(function(){
           $('#signOutButton').click(function(){
@@ -40,5 +50,5 @@ function onSignIn(googleUser){
             auth2.signOut().then(function() {
               //console.log('User signed out.');
             });
-          });
         });
+});
