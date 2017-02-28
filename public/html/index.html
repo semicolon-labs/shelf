@@ -7,6 +7,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-migrate-3.0.0.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script src="http://localhost:8082/public/?filePath=dependencies/stellar.js-master/stellar.js-master/jquery.stellar.js"></script>
   <script src="http://localhost:8082/public/?filePath=js/stellar.js"></script>
   <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
@@ -15,8 +17,8 @@
   <script src="http://localhost:8082/public/?filePath=js/script.js"></script>
   <!--css/dependencies-->
   <link rel="stylesheet" type="text/css" href="http://localhost:8082/public/?filePath=dependencies/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="http://localhost:8082/public/?filePath=css/styles.css">
-  <link rel="stylesheet" type="text/css" href="http://localhost:8082/public/?filePath=dependencies/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 </head>
 <body  background="http://localhost:8082/public/?filePath=images/background.jpeg" data-stellar-background-ratio="1">
   <div id="s" data-stellar-offset-parent="true">
@@ -95,8 +97,24 @@
     <div class="star star11 medium" data-stellar-ratio="4.5"></div>
   </div>
 </div><br><br><br><br><br><br><br><br><br><br>
-<div data-onsuccess="onSignIn" data-onload="true" data-stellar-ratio="4.7777777777" id="my-signin2"></div>
-<br><br><br><br><br><br><br><br><br><br>
+
+<div id="homeMenu">
+<span class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="cities">Select City</button>
+  <ul class="dropdown-menu dropdown-menu-right" id="cityDrop">
+  </ul>
+</span>
+
+<span class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="clients">Select University</button>
+  <ul class="dropdown-menu" id="uniDrop">
+  </ul>
+</span>
+</div>
+
+<br>
+<div data-onsuccess="onSignIn" data-onload="true" id="my-signin2"></div>
+<br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br>
 

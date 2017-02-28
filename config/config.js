@@ -19,7 +19,7 @@ config.DBMS_CONFIG = {
     password: process.env.DB_PASSWORD
 };
 //PERMITTED URLs for authentication
-config.PERMITTED_URLS = ["/", "/check-login", "/logout", "/login"];
+config.PERMITTED_URLS = ["/", "/check-login", "/logout", "/login", "/get-cities", "/get-clients"];
 //HTTP CODES for usage
 config.HTTP_CODES = {OK: 200, BAD_REQUEST: 400, FORBIDDEN: 403, SERVER_ERROR: 500};
 
