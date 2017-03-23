@@ -1,4 +1,6 @@
 /**
+ * @author: Shubham Sharma
+ * 
  * This is the configuration file.
  * It stores all the configuration parameters for our server!
 */
@@ -19,7 +21,7 @@ config.DBMS_CONFIG = {
     password: process.env.DB_PASSWORD
 };
 //PERMITTED URLs for authentication
-config.PERMITTED_URLS = ["/", "/check-login", "/logout", "/login", "/get-cities", "/get-clients"];
+config.PERMITTED_URLS = ["/", "/check-login", "/logout", "/login"];
 //HTTP CODES for usage
 config.HTTP_CODES = {OK: 200, BAD_REQUEST: 400, FORBIDDEN: 403, SERVER_ERROR: 500};
 

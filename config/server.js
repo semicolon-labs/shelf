@@ -1,6 +1,8 @@
 /**
-* Setup file of the app.
-*/
+ * @author: Shubham Sharma
+ * 
+ * Setup file of the app.
+ */
 
 //Include modules
 var express = require('express');
@@ -25,12 +27,13 @@ function authChecker(req, res, next) {
 //DEFINE THE APP
 var app = express();
 app.use(morgan('combined'));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({limit: '5mb'}));
 app.use(session({
     secret: 'someRandomSecretValue',
     cookie: {maxAge: 1000*60*60}
 }));
-app.use(authChecker);
+//app.use(authChecker); //temporarily comment out for development
 app.use('/', router);
 
 //START THE APP

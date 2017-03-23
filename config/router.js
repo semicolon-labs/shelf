@@ -1,4 +1,6 @@
 /**
+ * @author: Shubham Sharma
+ * 
  * This is the router file.
  * It manages all routing and directing!
 */
@@ -7,19 +9,12 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var User = require('../logic/User');
-var Product = require('../logic/Product');
 var sessionManager = require('../logic/sessionManager');
-var dataManager = require('../data/dataManager');
+var productManager = require('../logic/productManager');
 
 //www.example.com/public/?filePath=js/jquery.js
 router.get('/public', function(req, res){
 	res.sendFile(path.join(__dirname, '/../public/', req.query.filePath));
-});
-
-/** TEST ROUTE */
-router.get('/test-product', function(req, res){
-	res.sendFile(path.join(__dirname, '/../templates', 'product.html'));
 });
 
 /** SESSION routes */
@@ -35,14 +30,9 @@ router.get('/check-login', function(req, res){
 	sessionManager.checkLogin(req, res);
 });
 
-/** DATA routes */
-router.get('/get-cities', function(req, res){
-	dataManager.getCities(req, res);
-});
-
-//usage example /get-clients?id=xxx
-router.get('/get-clients', function(req, res){
-	dataManager.getClients(req, res);
+/** PRODUCT routes */
+router.get('/get-products', function(req, res){
+	productManager.getProducts(req, res);
 });
 
 //INDEX redirection for / or any invalid url
