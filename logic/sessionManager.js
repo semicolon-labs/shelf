@@ -1,6 +1,4 @@
 /**
-  * @author: Shubham Sharma
-  *  
   * This is the session management file
   * accounts for the user session management.
   * GAPI authentication; Cookie management;
@@ -16,7 +14,7 @@
 //Include modules
 var config = require('./../config/config.js');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-var userData = require("./../data/userData");
+var dataManager = require("./../data/dataManager");
 
 /**
  * POST request with token, domain in body
@@ -25,14 +23,15 @@ var userData = require("./../data/userData");
  */
 exports.login = function(req, res){
   var token = req.body.idtoken;
+  var domain = req.body.domain;
   //token verification
-  verifyToken(token, function(status){
+  verifyToken(token, domain, function(status){
     if(status){
       req.session.auth = {userToken: token};
       //fetch user details
       getUserDetails(req, function(userData){
         //add user if it does not exists
-        userData.checkUserExists(userData, function(info){
+        dataManager.checkUserExists(userData, function(info){
           if(info=="error")
             res.status(config.HTTP_CODES.SERVER_ERROR).send("Error");
           else{
@@ -59,9 +58,8 @@ function getUserDetails(req, callback){
         if(xhr.status===config.HTTP_CODES.OK){
           var raw = JSON.parse(xhr.responseText);
             details = {username: raw.given_name,
-                        email: raw.email,
-                        domain: raw.hd
-                      };
+                        id: raw.family_name,
+                        email: raw.email};
             callback(details);
         }else {
           console.log("Status not 200")
@@ -76,7 +74,7 @@ function getUserDetails(req, callback){
  * Verifies the token from googleapis
  * Checks client id and hosted domain for the request
  */
-function verifyToken(token, callback){
+function verifyToken(token, domain, callback){
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+token);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -85,16 +83,11 @@ function verifyToken(token, callback){
       if(xhr.readystate == XMLHttpRequest.DONE){
           if(xhr.status===config.HTTP_CODES.OK){
               var raw = JSON.parse(xhr.responseText);
-              userData.getUniversityId(raw.hd, function(id){
-                if(id==="error"){
-                  callback(false);
-                }
-                else if(raw.email_verified==="true"&&raw.aud===config.GAPI_CLIENT_ID){
-                  callback(true);
-                }else {
-                  callback(false);
-                }
-              });
+              if(raw.email_verified==="true"&&raw.aud===config.GAPI_CLIENT_ID&&raw.hd===domain){
+                callback(true);
+              }else {
+                callback(false);
+              }
           }else {
             callback(false);
           }
